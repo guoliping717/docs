@@ -41,12 +41,12 @@ jobs:
       - name: Build with VitePress
         run: |
           pnpm run docs:build # 启动项目
-          Remove-Item -Recurse -Force .vitepress/dist/node_modules -ErrorAction SilentlyContinue
-          Remove-Item -Recurse -Force .vitepress/dist/.vite -ErrorAction SilentlyContinue
-          Remove-Item -Recurse -Force .vitepress/dist/.pnpm -ErrorAction SilentlyContinue
-          Remove-Item -Recurse -Force .vitepress/dist/.git -ErrorAction SilentlyContinue
-          Get-ChildItem -Path .vitepress/dist -Recurse | Where-Object { $_.LinkType -ne $null } | Remove-Item -Force
-          New-Item -ItemType File -Path .vitepress/dist/.nojekyll -Force
+          rm -rf .vitepress/dist/node_modules
+          rm -rf .vitepress/dist/.vite
+          rm -rf .vitepress/dist/.pnpm
+          rm -rf .vitepress/dist/.git
+          find .vitepress/dist -type l -exec rm -f {} \;
+          touch .vitepress/dist/.nojekyll
       - name: Upload artifact
         uses: actions/upload-artifact@v4  # 上传构建产物
         with:
