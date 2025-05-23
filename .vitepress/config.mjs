@@ -3,6 +3,7 @@ import { set_sidebar } from "../utils/auto_sidebar.mjs";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
+  base: "/docs/",
   title: "Gordon.Guo全栈编程-开发文档",
   description: "this is gordon.guo code docs",
   themeConfig: {
