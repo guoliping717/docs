@@ -41,9 +41,12 @@ jobs:
       - name: Build with VitePress
         run: |
           pnpm run docs:build # 启动项目
-          rm -rf .vitepress/dist/node_modules
-          find .vitepress/dist -type l -exec rm -f {} \;
-          touch .nojekyll  # 通知githubpages不要使用Jekyll处理这个站点，不知道为啥不生效，就手动搞了
+          Remove-Item -Recurse -Force .vitepress/dist/node_modules -ErrorAction SilentlyContinue
+          Remove-Item -Recurse -Force .vitepress/dist/.vite -ErrorAction SilentlyContinue
+          Remove-Item -Recurse -Force .vitepress/dist/.pnpm -ErrorAction SilentlyContinue
+          Remove-Item -Recurse -Force .vitepress/dist/.git -ErrorAction SilentlyContinue
+          Get-ChildItem -Path .vitepress/dist -Recurse | Where-Object { $_.LinkType -ne $null } | Remove-Item -Force
+          New-Item -ItemType File -Path .vitepress/dist/.nojekyll -Force
       - name: Upload artifact
         uses: actions/upload-artifact@v4  # 上传构建产物
         with:
